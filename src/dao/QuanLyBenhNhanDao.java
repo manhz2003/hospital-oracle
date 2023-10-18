@@ -138,15 +138,15 @@ public class QuanLyBenhNhanDao implements DaoInterface<BenhNhanModel> {
             connection = ConnectDB.getConnection();
             connection.setAutoCommit(false); // Tắt chế độ tự động commit
 
-            // Bước 1: Xóa tất cả các lịch khám liên quan đến bác sĩ cần xóa
-            String deleteHoSo = "DELETE FROM hosobenhan WHERE maHoSo = ?";
-            preparedStatement = connection.prepareStatement(deleteHoSo);
+            // Bước 1: Xóa tất cả hồ sơ bệnh án của bệnh nhân
+            String deleteHoSoSql = "DELETE FROM hosobenhan WHERE maBenhNhan = ?";
+            preparedStatement = connection.prepareStatement(deleteHoSoSql);
             preparedStatement.setString(1, id);
             rowsAffected = preparedStatement.executeUpdate();
 
-            // Bước 2: Xóa bác sĩ từ bảng bacsi
-            String deleteBenhNhan = "DELETE FROM benhnhan WHERE maBenhNhan = ?";
-            preparedStatement = connection.prepareStatement(deleteBenhNhan);
+            // Bước 2: Xóa bệnh nhân từ bảng benhnhan
+            String deleteBenhNhanSql = "DELETE FROM benhnhan WHERE maBenhNhan = ?";
+            preparedStatement = connection.prepareStatement(deleteBenhNhanSql);
             preparedStatement.setString(1, id);
             rowsAffected += preparedStatement.executeUpdate();
 

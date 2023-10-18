@@ -1211,18 +1211,28 @@ public class QuanLyBenhNhan extends javax.swing.JFrame {
                 if (idXoa.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Vui lòng nhập ID bệnh nhân cần xóa.");
                 } else {
-                    BenhNhanController benhNhanController = new BenhNhanController();
-                    int rowsAffected = benhNhanController.xoaBenhNhanTheoID(idXoa);
+                    int choice = JOptionPane.showConfirmDialog(
+                            null,
+                            "Nếu xóa bệnh nhân này, hệ thống sẽ xóa lịch khám liên quan đến bệnh nhân đó.\nBạn có chắc chắn muốn xóa?",
+                            "Xác nhận",
+                            JOptionPane.YES_NO_OPTION
+                    );
+                    if (choice == JOptionPane.YES_OPTION) {
+                        BenhNhanController benhNhanController = new BenhNhanController();
+                        int rowsAffected = benhNhanController.xoaBenhNhanTheoID(idXoa);
 
-                    if (rowsAffected > 0) {
-                        JOptionPane.showMessageDialog(null, "Xóa bệnh nhân thành công.");
-                        hienThiDanhSachBenhNhan();
+                        if (rowsAffected > 0) {
+                            JOptionPane.showMessageDialog(null, "Xóa bệnh nhân thành công.");
+                            hienThiDanhSachBenhNhan();
+                            reset();
 
-                    } else if (rowsAffected == -1) {
-                        JOptionPane.showMessageDialog(null, "Không tìm thấy bệnh nhân có ID: " + idXoa);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Xóa bệnh nhân thất bại.");
+                        } else if (rowsAffected == -1) {
+                            JOptionPane.showMessageDialog(null, "Không tìm thấy bệnh nhân có ID: " + idXoa);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Xóa bệnh nhân thất bại.");
+                        }
                     }
+
                 }
 
             }
@@ -1238,6 +1248,7 @@ public class QuanLyBenhNhan extends javax.swing.JFrame {
                     if (rowsAffected > 0) {
                         JOptionPane.showMessageDialog(null, "Xóa hồ sơ thành công.");
                         hienThiDanhSachHoSo();
+                        reset();
 
                     } else if (rowsAffected == -1) {
                         JOptionPane.showMessageDialog(null, "Không tìm thấy hồ sơ có ID: " + idXoa);

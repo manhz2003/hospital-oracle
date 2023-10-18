@@ -806,16 +806,24 @@ public class QuanLyBacSi extends javax.swing.JFrame {
         if (idXoa.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập ID cần xóa.");
         } else {
-            BacSiController bacSiController = new BacSiController();
-            int rowsAffected = bacSiController.xoaBacSiTheoID(idXoa);
+            int choice = JOptionPane.showConfirmDialog(
+                    null,
+                    "Nếu xóa bác sĩ này, hệ thống sẽ xóa lịch khám và bệnh nhân liên quan đến bác sĩ đó.\nBạn có chắc chắn muốn xóa?",
+                    "Xác nhận",
+                    JOptionPane.YES_NO_OPTION
+            );
+            if (choice == JOptionPane.YES_OPTION) {
+                BacSiController bacSiController = new BacSiController();
+                int rowsAffected = bacSiController.xoaBacSiTheoID(idXoa);
 
-            if (rowsAffected > 0) {
-                JOptionPane.showMessageDialog(null, "Xóa bác sĩ thành công.");
-                hienThiDanhSachBacSi();
-            } else if (rowsAffected == -1) {
-                JOptionPane.showMessageDialog(null, "Không tìm thấy bác sĩ có ID: " + idXoa);
-            } else {
-                JOptionPane.showMessageDialog(null, "Xóa bác sĩ thất bại.");
+                if (rowsAffected > 0) {
+                    JOptionPane.showMessageDialog(null, "Xóa bác sĩ thành công.");
+                    hienThiDanhSachBacSi();
+                } else if (rowsAffected == -1) {
+                    JOptionPane.showMessageDialog(null, "Không tìm thấy bác sĩ có ID: " + idXoa);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Xóa bác sĩ thất bại.");
+                }
             }
         }
     }//GEN-LAST:event_btnXoajButton4ActionPerformed
@@ -861,7 +869,6 @@ public class QuanLyBacSi extends javax.swing.JFrame {
             hinhAnh = selectedImagePath;
             // Tạo một đối tượng BacSiModel mới từ thông tin đã nhập
             BacSiModel bacSiMoi = new BacSiModel(maBacSi, chuyenKhoa, kinhNghiem, hocVan, hoVaTen, soDienThoai, email, gioiTinh, diaChi, hinhAnh);
-            // Gọi phương thức cập nhật thông tin từ controller
             BacSiController bacSiController = new BacSiController();
             int rowsAffected = bacSiController.capNhatThongTinBacSi(bacSiMoi, idCapNhat);
 
@@ -884,9 +891,9 @@ public class QuanLyBacSi extends javax.swing.JFrame {
         String kinhNghiem = txtKinhNghiem.getText();
         String email = txtEmail.getText();
         String hocVan = txtHocVan.getText();
-        String gioiTinh = "";
-        String chuyenKhoa = "";
-        String hinhAnh = "";
+        String gioiTinh;
+        String chuyenKhoa;
+        String hinhAnh;
 
         if (maBacSi.isEmpty() || hoVaTen.isEmpty() || soDienThoai.isEmpty() || diaChi.isEmpty() || kinhNghiem.isEmpty() || email.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Bạn chưa nhập đủ thông tin!");

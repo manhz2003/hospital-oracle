@@ -159,26 +159,35 @@ public class QuanLyBacSiDao implements DaoInterface<BacSiModel> {
         int rowsAffected = 0;
 
         try {
-            // Lấy kết nối tới cơ sở dữ liệu
             connection = ConnectDB.getConnection();
-            connection.setAutoCommit(false); // Tắt chế độ tự động commit
+            connection.setAutoCommit(false);
 
-            // Bước 1: Xóa tất cả các lịch khám liên quan đến bác sĩ cần xóa
-            String deleteLichKhamSql = "DELETE FROM lichKham WHERE maBacSi = ?";
-            preparedStatement = connection.prepareStatement(deleteLichKhamSql);
+            // Bước 1: Xóa tất cả hồ sơ bệnh án của bệnh nhân liên quan đến bác sĩ
+            String deleteHoSoBenhAnSql = "DELETE FROM hosobenhan WHERE maBacSi = ?";
+            preparedStatement = connection.prepareStatement(deleteHoSoBenhAnSql);
             preparedStatement.setString(1, id);
             rowsAffected = preparedStatement.executeUpdate();
 
-            // Bước 2: Xóa bác sĩ từ bảng bacsi
+            // Bước 2: Xóa tất cả lịch khám của bệnh nhân liên quan đến bác sĩ
+            String deleteLichKhamSql = "DELETE FROM lichKham WHERE maBacSi = ?";
+            preparedStatement = connection.prepareStatement(deleteLichKhamSql);
+            preparedStatement.setString(1, id);
+            rowsAffected += preparedStatement.executeUpdate();
+
+            // Bước 3: Xóa tất cả bệnh nhân liên quan đến bác sĩ
+            String deleteBenhNhanSql = "DELETE FROM benhnhan WHERE tenDangNhap IN (SELECT DISTINCT tenDangNhap FROM lichKham WHERE maBacSi = ?)";
+            preparedStatement = connection.prepareStatement(deleteBenhNhanSql);
+            preparedStatement.setString(1, id);
+            rowsAffected += preparedStatement.executeUpdate();
+
+            // Bước 4: Xóa bác sĩ từ bảng bacsi
             String deleteBacSiSql = "DELETE FROM bacsi WHERE maBacSi = ?";
             preparedStatement = connection.prepareStatement(deleteBacSiSql);
             preparedStatement.setString(1, id);
             rowsAffected += preparedStatement.executeUpdate();
 
-            // Commit thay đổi nếu không có lỗi
             connection.commit();
         } catch (SQLException e) {
-            // Rollback nếu có lỗi
             try {
                 if (connection != null) {
                     connection.rollback();
@@ -188,7 +197,6 @@ public class QuanLyBacSiDao implements DaoInterface<BacSiModel> {
             }
             e.printStackTrace();
         } finally {
-            // Mở lại chế độ tự động commit và đóng kết nối và tài nguyên
             try {
                 if (connection != null) {
                     connection.setAutoCommit(true);
@@ -206,32 +214,7 @@ public class QuanLyBacSiDao implements DaoInterface<BacSiModel> {
 
     @Override
     public void deleteAll() {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
 
-        try {
-            // Lấy kết nối tới cơ sở dữ liệu
-            connection = ConnectDB.getConnection();
-
-            // Chuẩn bị câu truy vấn SQL để xóa tất cả dữ liệu
-            String sql = "DELETE FROM bacsi";
-            preparedStatement = connection.prepareStatement(sql);
-
-            // Thực hiện xóa dữ liệu
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            // Đóng kết nối và tài nguyên
-            ConnectDB.closeConnection(connection);
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 
     @Override
