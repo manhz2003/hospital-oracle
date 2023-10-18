@@ -819,6 +819,7 @@ public class QuanLyBenhNhan extends javax.swing.JFrame {
             // Gắn model vào JTable
             jTablebenhNhan.setModel(model);
             jTablebenhNhan.setAutoscrolls(true);
+            loadBenhNhan();
         } else {
             JOptionPane.showMessageDialog(null, "Bác sĩ bạn tìm không tồn tại.");
         }

@@ -414,7 +414,7 @@ public class QuanLyBacSi extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         btnSua = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
-        btnXoaTatCa = new javax.swing.JButton();
+        btnXem = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTableBacSi = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
@@ -526,14 +526,14 @@ public class QuanLyBacSi extends javax.swing.JFrame {
             }
         });
 
-        btnXoaTatCa.setBackground(new java.awt.Color(0, 102, 102));
-        btnXoaTatCa.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnXoaTatCa.setForeground(new java.awt.Color(255, 255, 255));
-        btnXoaTatCa.setText("Xem");
-        btnXoaTatCa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnXoaTatCa.addActionListener(new java.awt.event.ActionListener() {
+        btnXem.setBackground(new java.awt.Color(0, 102, 102));
+        btnXem.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnXem.setForeground(new java.awt.Color(255, 255, 255));
+        btnXem.setText("Xem");
+        btnXem.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnXem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXoaTatCajButton1ActionPerformed(evt);
+                btnXemjButton1ActionPerformed(evt);
             }
         });
 
@@ -681,7 +681,7 @@ public class QuanLyBacSi extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnXoaTatCa, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnXem, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -751,7 +751,7 @@ public class QuanLyBacSi extends javax.swing.JFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnXoaTatCa, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(btnXem, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jScrollPane2))
                 .addGap(37, 37, 37))
         );
@@ -760,7 +760,7 @@ public class QuanLyBacSi extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnXoaTatCajButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaTatCajButton1ActionPerformed
+    private void btnXemjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemjButton1ActionPerformed
         // Gọi controller để lấy danh sách bác sĩ
         BacSiController bacSiController = new BacSiController();
         ArrayList<BacSiModel> danhSachBacSi = bacSiController.layDanhSachBacSi();
@@ -799,7 +799,7 @@ public class QuanLyBacSi extends javax.swing.JFrame {
 
 //        tự động chỉnh độ rộng cột với thanh cuộn ngang.
         jTableBacSi.setAutoscrolls(true);
-    }//GEN-LAST:event_btnXoaTatCajButton1ActionPerformed
+    }//GEN-LAST:event_btnXemjButton1ActionPerformed
 
     private void btnXoajButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoajButton4ActionPerformed
         String idXoa = txtTimKiem.getText().trim();
@@ -860,8 +860,7 @@ public class QuanLyBacSi extends javax.swing.JFrame {
             }
             hinhAnh = selectedImagePath;
             // Tạo một đối tượng BacSiModel mới từ thông tin đã nhập
-            BacSiModel bacSiMoi = new BacSiModel(maBacSi, hoVaTen, soDienThoai, email, gioiTinh, diaChi, chuyenKhoa, kinhNghiem, hocVan, hinhAnh);
-
+            BacSiModel bacSiMoi = new BacSiModel(maBacSi, chuyenKhoa, kinhNghiem, hocVan, hoVaTen, soDienThoai, email, gioiTinh, diaChi, hinhAnh);
             // Gọi phương thức cập nhật thông tin từ controller
             BacSiController bacSiController = new BacSiController();
             int rowsAffected = bacSiController.capNhatThongTinBacSi(bacSiMoi, idCapNhat);
@@ -917,8 +916,7 @@ public class QuanLyBacSi extends javax.swing.JFrame {
                     if (maTonTai) {
                         JOptionPane.showMessageDialog(null, "Mã bác sĩ đã tồn tại!");
                     } else {
-                        BacSiModel bacSiModel = new BacSiModel(maBacSi, hoVaTen, soDienThoai, email, gioiTinh, diaChi, chuyenKhoa, kinhNghiem, hocVan, hinhAnh);
-                        // Gọi controller để thực hiện đăng ký
+                        BacSiModel bacSiModel = new BacSiModel(maBacSi, chuyenKhoa, kinhNghiem, hocVan, hoVaTen, soDienThoai, email, gioiTinh, diaChi, hinhAnh);
                         int rowsAffected = bacSiController.themBacSi(bacSiModel);
 
                         // Kiểm tra kết quả và hiển thị thông báo
@@ -1073,8 +1071,8 @@ public class QuanLyBacSi extends javax.swing.JFrame {
     private javax.swing.JButton btnTaiAnh;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnTimTheoId;
+    private javax.swing.JButton btnXem;
     private javax.swing.JButton btnXoa;
-    private javax.swing.JButton btnXoaTatCa;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox<String> cbbChuyenKhoa;
